@@ -1,44 +1,22 @@
 package com.company;
 
 class MatrixTest {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws CloneNotSupportedException {
 
 
 
-        /*System.out.println("Матрица1: ");
-        Matrix matrix1 = new Matrix(5, 5);
-        fillMatrix(matrix1);
-        printMatrix(matrix1);
 
-        System.out.println("\n");
-        Matrix matrix2 = new Matrix(matrix1);
-        printMatrix(matrix2);
-
-
-        matrix1.sizeMatrix();
-        matrix2.get_Element(5,5);
-
-        matrix2.get_row(1);
-        matrix2.get_col(1);
-
-        System.out.print(matrix1.equals(matrix2));
-
-        ImmutableMatrix matrix4 = new ImmutableMatrix(4,7);
-        fillMatrix(matrix4);
-        printMatrix(matrix4);
-
-        System.out.println("\n");
-        ImmutableMatrix matrix5 = new ImmutableMatrix(matrix4);
-        printMatrix(matrix5);*/
         Matrix matrix = new Matrix(4,4);
         matrix.fillMatrix();
         Matrix matrix1 = new Matrix(matrix);
-        matrix1.Upper_triangle_matrix1();
+        matrix.printMatrix();
         matrix1.printMatrix();
+        matrix1.set_Element(1,1,1000);
+        matrix1.printMatrix();
+        matrix.printMatrix();
 
 
-
-
+        //create_diagonal_matrix2(new int[]{1,2,3});
     }
 
 
@@ -85,6 +63,26 @@ class MatrixTest {
                 }
             }
 
+    }
+
+
+    public static void create_diagonal_matrix2(int ar[])
+    {
+        int len = ar.length;
+        int[][] array = new int[len][len];
+        for (int j =0;j<len; j++){
+            for (int k =0; k<len; k++){
+                if(j == k){
+                    array[j][k] = ar[j];
+                }
+                else  array[j][k] = 0;
+            }
+        }
+        for (int i = 0; i <array.length; i++)
+            for (int j = 0; j < array.length; j++) {
+                System.out.print(array[i][j] + "\t");
+                if (j == array[0].length - 1) System.out.println();
+            }
     }
 
 }

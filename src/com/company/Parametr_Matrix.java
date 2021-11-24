@@ -3,10 +3,10 @@ package com.company;
 import java.util.Arrays;
 import java.util.Objects;
 
-class Matrix implements Cloneable{
+public class Parametr_Matrix<E extends Number> {
     private int row; // количество строк
     private int col; // количество столбцов
-    private int[][] array;   // двумерный массив (матрица)
+    private Object[][] array;   // двумерный массив (матрица)
 
     public int getCol() {
         return col;
@@ -24,45 +24,51 @@ class Matrix implements Cloneable{
         this.row = row;
     }
 
-    public void setArray(int[][] array) {
+    public void setArray(Object[][] array) {
         this.array = array;
     }
 
-
-    // Первый конструктор
-    public Matrix(int n, int m) {
+    /*public Matrix(int n, int m , int k) {
         row = n;
         col = m;
         array = new int[row][col];
+        for (int[] arr : array) {
+            for (int i = 0; i < arr.length; i++) {
+                arr[i] = 0;
+            }
+        }
+    }*/
+
+
+    // Первый конструктор
+    public Parametr_Matrix(int n, int m) {
+        row = n;
+        col = m;
+        array = new Object[row][col];
     }
 
     // Второй конструктор
-    public Matrix(int ar[][]) {
-        array = ar;
+    public Parametr_Matrix(Object[][] ar) {
+        array =  ar;
         row = array.length;
         col = array[0].length;
     }
 
     // Первый пустой конструктор
-    public Matrix() {
+    public Parametr_Matrix() {
         row = 0;
         col = 0;
-        array = new int[row][col];
+        array = new Object[row][col];
     }
 
     // для копии матрицы
-    public Matrix(Matrix matrix) throws CloneNotSupportedException {
-        int[][] copy = new int[matrix.getMatrix().length][];
-        for (int i = 0; i < copy.length; i++) {
-            copy[i] = new int[matrix.getMatrix()[i].length];
-            System.arraycopy(matrix.getMatrix()[i], 0, copy[i], 0, matrix.getMatrix()[i].length);
-        }
-        this.array =copy;
-        this.col = matrix.col;
-        this.row = matrix.row;
+    public Parametr_Matrix(Parametr_Matrix matrix) {
+        this.array =  matrix.getMatrix();
+        row = array.length;
+        col = array[0].length;
     }
 
-    public int[][] getMatrix() {
+    public Object[][] getMatrix() {
         return array;
     }
 
@@ -73,18 +79,14 @@ class Matrix implements Cloneable{
     }
 
     public void get_Element(int row, int col){
-        System.out.println("Элемент под индексом " + row + "," + col + " = " + array[row-1][col-1]);
-    }
-
-    public void set_Element(int row, int col, int value){
-        array[row-1][col-1] = value;
+        System.out.println("Элемент под индексом " + row + "," + col + " = " + (E)array[row-1][col-1]);
     }
     public void get_row(int row){
         System.out.print("Ряд"+row+": ");
-       for (int i = 0; i<array[row-1].length; i++){
-           System.out.print(array[row-1][i]+ " ");
-       }
-       System.out.print("\n");
+        for (int i = 0; i<array[row-1].length; i++){
+            System.out.print(array[row-1][i]+ " ");
+        }
+        System.out.print("\n");
     }
 
     public void get_col(int col){
@@ -98,7 +100,7 @@ class Matrix implements Cloneable{
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Matrix matrix = (Matrix) o;
+        Parametr_Matrix matrix = (Parametr_Matrix) o;
         return row == matrix.row && col == matrix.col && Arrays.equals(array, matrix.array);
     }
 
@@ -117,9 +119,9 @@ class Matrix implements Cloneable{
         {
             for (int i=k+1;i<array.length;i++)
             {
-                mu = (double) array[i][k]/array[k][k];
+                mu =  ((double)array[i][k]/(double)array[k][k]);
                 for (int j=0;j<array.length;j++)
-                    array[i][j]-=array[k][j]*mu;
+                    array[i][j] =(double)array[i][j] -((double)array[k][j] * mu);
             }
         }
     }
@@ -128,34 +130,28 @@ class Matrix implements Cloneable{
         double mu = 0;
         for (int k = array.length - 1; k >= 0; k--) {
             for (int i = k - 1; i >= 0; i--) {
-                mu = (double) array[i][k] / array[k][k];
+                mu =  ((double)array[i][k] / (double)array[k][k]);
                 for (int j = array.length - 1; j >= 0; j--)
-                    array[i][j] -= array[k][j] * mu;
+
+                    array[i][j] =(double)array[i][j] -((double)array[k][j] * mu);
             }
         }
     }
 
 
     public  void fillMatrix() {
-        for (int[] arr : array) {
+        for (Object[] arr : array) {
             for (int i = 0; i < arr.length; i++) {
-                arr[i] = (int) (Math.random() * 9 + 1);
+                arr[i] =  (Math.random() * 9 + 1);
             }
         }
     }
 
     public  void printMatrix() {
         for (int i = 0; i <array.length; i++)
-            for (int j = 0; j < array[i].length; j++) {
-                System.out.print(array[i][j] + "\t");
+            for (int j = 0; j < array.length; j++) {
+                System.out.print((E) array[i][j] + "\t");
                 if (j == array[0].length - 1) System.out.println();
             }
-        System.out.println();
     }
-
-    @Override
-    public Matrix clone() throws CloneNotSupportedException {
-        return (Matrix) super.clone();
-    }
-
 }
